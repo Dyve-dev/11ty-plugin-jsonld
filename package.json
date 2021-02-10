@@ -1,0 +1,45 @@
+{
+  "name": "@dyve/11ty-plugin-jsonld",
+  "version": "0.0.1",
+  "description": "11ty plugin to generate structured data",
+  "main": "plugin/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "cd __test__ && cross-env NODE_ENV=test mocha --recursive './**/*spec.js' --exit || exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dyve-dev/11ty-plugin-jsonld.git"
+  },
+  "keywords": [
+    "11ty",
+    "eleventy",
+    "dyve",
+    "jsonld",
+    "structured",
+    "data"
+  ],
+  "author": "@dyve",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dyve-dev/11ty-plugin-jsonld/issues"
+  },
+  "homepage": "https://github.com/Dyve-dev/11ty-plugin-jsonld#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^0.11.1",
+    "@types/debug": "^4.1.5",
+    "@types/jsonld": "^1.5.2",
+    "@types/node": "^14.14.25",
+    "chai": "*",
+    "cross-env": "*",
+    "mocha": "*",
+    "rimraf": "*"
+  },
+  "dependencies": {
+    "debug": "^4.3.1",
+    "jsonld": "^3.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
