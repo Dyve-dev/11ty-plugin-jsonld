@@ -4,7 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.plugin = exports.Plugin = void 0;
+const fs_1 = __importDefault(require("fs"));
 const debug_1 = __importDefault(require("debug"));
+const ejs_1 = __importDefault(require("ejs"));
 const debug = debug_1.default('@dyve:11typlugin:jsonld');
 const defaults = {};
 /**
@@ -12,20 +14,15 @@ const defaults = {};
  */
 class Plugin {
     constructor() {
-        this.jsonld = async (elev) => {
-            const _jsonld_open = `<script type="application/ld+json">`;
-            const _jsonld_close = `</script>`;
-            const context = {
-                '@base': 'http://schema.org/',
-            };
-            const doc = {
-                '@type': 'Website',
-                url: 'https://arbellay.ch',
-            };
-            //const compacted = await jsonld.compact(doc, context);
-            const compacted = 'test';
-            return _jsonld_open + compacted + _jsonld_close;
-        };
+        this.websiteTemplate = null;
+        fs_1.default.readFile('../templates/webiste.ldjson.ejs', { encoding: 'utf-8' }, async (err, data) => {
+            if (err) {
+                debug(err);
+            }
+            if (data) {
+                this.websiteTemplate = await ejs_1.default.compile(data);
+            }
+        });
     }
 }
 exports.Plugin = Plugin;
@@ -33,8 +30,12 @@ exports.plugin = {
     initArguments: {},
     configFunction: async (eleventyConfig, options) => {
         const _plugin = new Plugin();
+        debug('init');
         eleventyConfig.addShortcode('jsonld', (data) => {
-            return _plugin.jsonld(this);
+            if (_plugin.websiteTemplate) {
+                return _plugin.websiteTemplate(data);
+            }
+            return '';
         });
     },
 };

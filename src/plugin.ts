@@ -1,7 +1,8 @@
+import fs from 'fs';
 import Debug from 'debug';
 import { PluginOptions } from './types';
-import jsonld from 'jsonld';
-import { ContextDefinition, JsonLdDocument } from 'jsonld';
+import ejs from 'ejs';
+
 const debug = Debug('@dyve:11typlugin:jsonld');
 
 const defaults: PluginOptions = {};
@@ -10,29 +11,30 @@ const defaults: PluginOptions = {};
  * Using class is easier for testing
  */
 export class Plugin {
-  jsonld = async (elev: any) => {
-    const _jsonld_open = `<script type="application/ld+json">`;
-    const _jsonld_close = `</script>`;
-    const context: ContextDefinition = {
-      '@base': 'http://schema.org/',
-    };
-    const doc: JsonLdDocument = {
-      '@type': 'Website',
-      url: 'https://arbellay.ch',
-    };
-    //const compacted = await jsonld.compact(doc, context);
-    const compacted = 'test';
-    return _jsonld_open + compacted + _jsonld_close;
-  };
+  websiteTemplate: ejs.TemplateFunction | null = null;
+
+  constructor() {
+    fs.readFile('../templates/webiste.ldjson.ejs', { encoding: 'utf-8' }, async (err, data) => {
+      if (err) {
+        debug(err);
+      }
+      if (data) {
+        this.websiteTemplate = await ejs.compile(data);
+      }
+    });
+  }
 }
 
 export const plugin = {
   initArguments: {},
   configFunction: async (eleventyConfig: any, options?: PluginOptions) => {
     const _plugin = new Plugin();
-
+    debug('init');
     eleventyConfig.addShortcode('jsonld', (data: any) => {
-      return _plugin.jsonld(this);
+      if (_plugin.websiteTemplate) {
+        return _plugin.websiteTemplate(data);
+      }
+      return '';
     });
   },
 };

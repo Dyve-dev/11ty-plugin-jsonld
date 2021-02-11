@@ -1,9 +1,11 @@
 import { PluginOptions } from './types';
+import ejs from 'ejs';
 /**
  * Using class is easier for testing
  */
 export declare class Plugin {
-    jsonld: (elev: any) => Promise<string>;
+    websiteTemplate: ejs.TemplateFunction | null;
+    constructor();
 }
 export declare const plugin: {
     initArguments: {};

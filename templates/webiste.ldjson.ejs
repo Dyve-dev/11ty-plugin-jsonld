@@ -1,0 +1,21 @@
+<script type="application/ld+json">
+  {
+        "@context": "https://schema.org/",
+        "@type": "WebSite",
+        <%_ if (creator) { _%>
+        "creator": "<%= creator %>",
+        <%_ } _%>
+        <%_ if (url) { _%>
+        "url": "<%= url %>",
+        <%_ } _%>
+        <%_ if (description) { _%>
+      "description": "<%= description %>",
+      <%_ } _%>
+      <%_ if (keywords) { _%>
+      "keywords": "<%= keywords %>",
+      <%_ } _%>
+      <%_ if (headline) { _%>
+      "headline": "<%= headline %>",
+      <%_ } _%>
+  }
+</script>
